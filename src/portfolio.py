@@ -1,8 +1,9 @@
 import pandas as pd
 import yfinance as yf
-import skfolio as skf
+import skfolio
 import skfolio.preprocessing as skp
 import skfolio.optimization as sko
+
 
 
 
@@ -60,5 +61,5 @@ def portfolio(tickers, start_date='2020-01-01', **mean_risk_params):
     return weights_dict
 
 tickers = ['AAPL', 'MSFT','NVDA']
-weights = portfolio(tickers, risk_measure=skf.RiskMeasure.CVAR)
+weights = portfolio(tickers, risk_measure=skfolio.RiskMeasure.CVAR)
 print(weights)
