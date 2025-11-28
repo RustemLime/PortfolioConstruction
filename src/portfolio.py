@@ -13,10 +13,7 @@ def portfolio(tickers, start_date='2020-01-01', **mean_risk_params):
     Parameters:
     tickers: list of stock tickers
     start_date: start date of the data
-    mean_risk_params: dictionary of parameters to pass to skfolio.optimization.MeanRisk()
-                      (e.g., risk_measure, solver, max_volatility, etc.)
-    examples of mean_risk_params:
-    ----------
+    
     objective_function : ObjectiveFunction, default=ObjectiveFunction.MINIMIZE_RISK
         :class:`~skfolio.optimization.ObjectiveFunction` of the optimization.
         Can be any of:
