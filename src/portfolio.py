@@ -3,9 +3,7 @@ import yfinance as yf
 import skfolio
 import skfolio.preprocessing as skp
 import skfolio.optimization as sko
-
-
-from yfinance.const import k
+import json
 
 
 
@@ -85,8 +83,45 @@ def portfolio(tickers, start_date='2020-01-01', meanrisk_kwargs={'risk_measure':
     model = sko.MeanRisk(**meanrisk_kwargs)  # Unpack the dictionary
     model.fit(rets)
     weights_dict = dict(zip(tickers, model.weights_))
-    return weights_dict
 
-tickers = ['AAPL', 'MSFT','NVDA']
-weights = portfolio(tickers, meanrisk_kwargs={'risk_measure': "VARIANCE"})
-print(weights)
+    response_payload = {
+        "render_type": "table",
+        "table_data": weights_dict
+        }  
+    return json.dumps(response_payload)
+
+
+
+
+
+
+def simple_plot() -> str:
+    """Возвращает данные о продажах для построения графика."""
+    
+    
+    data = [10, 20, 15, 30]
+    indexes = ["Jan", "Feb", "Mar", "Apr"]
+    
+
+    response_payload = {
+        "render_type": "plot", 
+        "title": f"Simple Plot",
+        "plot_data": {
+            "data": [{
+                "x": indexes,
+                "y": data,
+                "type": "bar",
+                "marker": {"color": "indianred"}
+            }],
+            "layout": {"title": f"Simple Plot"}
+        }
+    }
+    
+    # MCP ожидает строку, поэтому сериализуем
+    return json.dumps(response_payload)
+
+# tickers = ['AAPL', 'TSLA','NVDA','QQQ']
+# weights = portfolio(tickers, meanrisk_kwargs={'risk_measure': "VARIANCE", 'objective_function': "MINIMIZE_RISK", 'min_weights': 0.1, 'max_weights': 0.5})
+# print(weights)
+
+# print(simple_plot())
