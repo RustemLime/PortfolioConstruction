@@ -10,7 +10,8 @@ from yfinance.const import k
 
 
 
-def portfolio(tickers, start_date='2020-01-01',kwargs={'objective_function': "MINIMIZE_RISK", 'risk_measure': "VARIANCE"}):
+def portfolio(tickers, start_date='2020-01-01', **kwargs):
+    
     """
     This function calculates the weights of a portfolio of stocks using the MeanRisk model.
     Parameters:
@@ -78,5 +79,5 @@ def portfolio(tickers, start_date='2020-01-01',kwargs={'objective_function': "MI
     return weights_dict
 
 tickers = ['AAPL', 'MSFT','NVDA']
-weights = portfolio(tickers, kwargs={'risk_measure': "CVAR"})
+weights = portfolio(tickers, risk_measure="CVAR")
 print(weights)
