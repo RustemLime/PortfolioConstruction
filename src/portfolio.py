@@ -72,5 +72,5 @@ def portfolio(tickers, start_date='2020-01-01', **kwargs):
     return weights_dict
 
 tickers = ['AAPL', 'MSFT','NVDA']
-weights = portfolio(tickers, risk_measure="CVAR")
+weights = portfolio(tickers, risk_measure="VARIANCE")
 print(weights)
