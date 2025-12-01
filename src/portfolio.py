@@ -64,11 +64,15 @@ def portfolio(tickers, start_date='2020-01-01',kwargs=None):
     prices = prices['Close'].ffill()
     rets = skp.prices_to_returns(prices)
 
+    print(kwargs)
+
     for key, value in kwargs.items():
         if key == 'objective_function':
             kwargs[key] = getattr(sko.ObjectiveFunction, value)
         elif key == 'risk_measure':
             kwargs[key] = getattr(skfolio.RiskMeasure, value)
+
+    print(kwargs)
 
 
     model = sko.MeanRisk(**kwargs)  # Unpack the dictionary
@@ -76,6 +80,6 @@ def portfolio(tickers, start_date='2020-01-01',kwargs=None):
     weights_dict = dict(zip(tickers, model.weights_))
     return weights_dict
 
-# tickers = ['AAPL', 'MSFT','NVDA']
-# weights = portfolio(tickers, kwargs={'risk_measure': "CVAR"})
-# print(weights)
+tickers = ['AAPL', 'MSFT','NVDA']
+weights = portfolio(tickers, kwargs={'risk_measure': "VARIANCE"})
+print(weights)
