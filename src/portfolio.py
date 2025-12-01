@@ -13,7 +13,7 @@ from yfinance.const import k
 def portfolio(tickers, start_date='2020-01-01',kwargs=None):
     """
     This function calculates the weights of a portfolio of stocks using the MeanRisk model.
-    Parameters:
+    Params:
     tickers: list of stock tickers
     start_date: start date of the data
 
