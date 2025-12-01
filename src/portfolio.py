@@ -10,10 +10,10 @@ from yfinance.const import k
 
 
 
-def portfolio(tickers, start_date='2020-01-01',kwargs=None):
+def portfolio(tickers, start_date='2020-01-01',kwargs={'objective_function': "MINIMIZE_RISK", 'risk_measure': "VARIANCE"}):
     """
     This function calculates the weights of a portfolio of stocks using the MeanRisk model.
-    Params:
+    Parameters:
     tickers: list of stock tickers
     start_date: start date of the data
 
@@ -64,16 +64,13 @@ def portfolio(tickers, start_date='2020-01-01',kwargs=None):
     prices = prices['Close'].ffill()
     rets = skp.prices_to_returns(prices)
 
-    print(kwargs)
-
-    for key, value in kwargs.items():
-        if key == 'objective_function':
-            kwargs[key] = getattr(sko.ObjectiveFunction, value)
-        elif key == 'risk_measure':
-            kwargs[key] = getattr(skfolio.RiskMeasure, value)
-
-    print(kwargs)
-
+    
+    if kwargs is not None:
+        for key, value in kwargs.items():
+            if key == 'objective_function':
+                kwargs[key] = getattr(sko.ObjectiveFunction, value)
+            elif key == 'risk_measure':
+                kwargs[key] = getattr(skfolio.RiskMeasure, value)
 
     model = sko.MeanRisk(**kwargs)  # Unpack the dictionary
     model.fit(rets)
@@ -81,5 +78,5 @@ def portfolio(tickers, start_date='2020-01-01',kwargs=None):
     return weights_dict
 
 tickers = ['AAPL', 'MSFT','NVDA']
-weights = portfolio(tickers, kwargs={'risk_measure': "VARIANCE"})
+weights = portfolio(tickers, kwargs={'risk_measure': "CVAR"})
 print(weights)
