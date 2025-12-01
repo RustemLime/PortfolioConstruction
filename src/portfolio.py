@@ -9,15 +9,8 @@ import json
 
 
 def portfolio(tickers, start_date='2020-01-01', meanrisk_kwargs={'risk_measure': "VARIANCE"}):
-    if meanrisk_kwargs is not None:
-        for key, value in meanrisk_kwargs.items():
-            if key == 'objective_function':
-                meanrisk_kwargs[key] = getattr(sko.ObjectiveFunction, value)
-            elif key == 'risk_measure':
-                meanrisk_kwargs[key] = getattr(skfolio.RiskMeasure, value)
-
     """
-    The function calculates the weights of a portfolio of stocks using the MeanRisk model.
+    This function calculates the weights of a portfolio of stocks using the MeanRisk model.
     Parameters:
     tickers: list of stock tickers
     start_date: start date of the data
@@ -67,6 +60,14 @@ def portfolio(tickers, start_date='2020-01-01', meanrisk_kwargs={'risk_measure':
     Returns:
     weights_dict: dictionary of weights for each stock
     """
+
+    if meanrisk_kwargs is not None:
+        for key, value in meanrisk_kwargs.items():
+            if key == 'objective_function':
+                meanrisk_kwargs[key] = getattr(sko.ObjectiveFunction, value)
+            elif key == 'risk_measure':
+                meanrisk_kwargs[key] = getattr(skfolio.RiskMeasure, value)
+
     prices = pd.DataFrame(yf.download(tickers, start=start_date, auto_adjust=True))
     prices = prices['Close'].ffill()
     rets = skp.prices_to_returns(prices)
@@ -95,7 +96,7 @@ def portfolio(tickers, start_date='2020-01-01', meanrisk_kwargs={'risk_measure':
 
 
 
-def simple_plot() -> str:
+def simple_plot():
     """Возвращает данные о продажах для построения графика."""
     
     
@@ -118,7 +119,7 @@ def simple_plot() -> str:
     }
     
     # MCP ожидает строку, поэтому сериализуем
-    return json.dumps(response_payload)
+    return response_payload
 
 # tickers = ['AAPL', 'TSLA','NVDA','QQQ']
 # weights = portfolio(tickers, meanrisk_kwargs={'risk_measure': "VARIANCE", 'objective_function': "MINIMIZE_RISK", 'min_weights': 0.1, 'max_weights': 0.5})
