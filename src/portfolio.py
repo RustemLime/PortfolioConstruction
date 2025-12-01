@@ -18,16 +18,10 @@ def portfolio(tickers, start_date='2020-01-01', **kwargs):
     tickers: list of stock tickers
     start_date: start date of the data
 
-    kwargs: dictionary of parameters to pass to sko.MeanRisk()
-    Can be any of:
+    kwargs: dictionary of parameters to pass to skfolio function MeanRisk()
 
-    kwargs = {
-        'objective_function': ObjectiveFunction.MINIMIZE_RISK,
-        'risk_measure': RiskMeasure.VARIANCE,
-    }
     ----------
-    objective_function : ObjectiveFunction, default=ObjectiveFunction.MINIMIZE_RISK
-        :class:`~skfolio.optimization.ObjectiveFunction` of the optimization.
+    objective_function : 
         Can be any of:
 
             * MINIMIZE_RISK
@@ -37,8 +31,7 @@ def portfolio(tickers, start_date='2020-01-01', **kwargs):
 
         The default is `ObjectiveFunction.MINIMIZE_RISK`.
 
-    risk_measure : RiskMeasure, default=RiskMeasure.VARIANCE
-        :class:`~skfolio.meta.RiskMeasure` of the optimization.
+    risk_measure : 
         Can be any of:
 
             * VARIANCE
