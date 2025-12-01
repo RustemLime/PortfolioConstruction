@@ -19,7 +19,7 @@ def portfolio(tickers, start_date='2020-01-01', meanrisk_kwargs={'risk_measure':
                 meanrisk_kwargs[key] = getattr(skfolio.RiskMeasure, value)
 
     """
-    This function calculates the weights of a portfolio of stocks using the MeanRisk model.
+    The function calculates the weights of a portfolio of stocks using the MeanRisk model.
     Parameters:
     tickers: list of stock tickers
     start_date: start date of the data
