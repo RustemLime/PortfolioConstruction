@@ -239,15 +239,13 @@ def equity_curve(portfolio_cumulative_returns_data_id):
 
     response_payload = {
         "render_type": "plot", 
-        "title": f"Simple Plot",
+        "title": f"Equity Curve",
         "plot_data": {
             "data": [{
                 "x": portfolio_returns.index,
                 "y": portfolio_returns.values,
-                "type": "line",
-                "marker": {"color": "indianred"}
             }],
-            "layout": {"title": f"Simple Plot"}
+            "layout": {"title": f"Equity Curve"}
         }
     }
     
