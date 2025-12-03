@@ -131,7 +131,7 @@ def portfolio(data_id, start_date='2020-01-01', end_date=datetime.now().strftime
 
     Example:
     response_payload = portfolio(data_id, start_date='2020-01-01', end_date='2020-12-31', meanrisk_kwargs={'risk_measure': "VARIANCE"})
-    response_payload = portfolio(data_id, start_date='2020-01-01', end_date='2020-12-31', meanrisk_kwargs={'risk_measure': "VARIANCE", 'objective_function': "MINIMIZE_RISK"})
+    response_payload = portfolio(data_id, start_date='2020-01-01', end_date='2020-12-31', meanrisk_kwargs={'risk_measure': "CVAR", 'objective_function': "MINIMIZE_RISK"})
     response_payload = portfolio(data_id, start_date='2020-01-01', end_date='2020-12-31', meanrisk_kwargs={'risk_measure': "VARIANCE", 'objective_function': "MINIMIZE_RISK", 'min_weights': 0.1, 'max_weights': 0.5})
     """
     
