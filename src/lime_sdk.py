@@ -5,6 +5,7 @@ from _decimal import Decimal
 
 from lime_trader.models.trading import Order, TimeInForce, OrderType, OrderSide
 import uuid
+import json
 
 
 # # Get the directory where this script is located
@@ -29,7 +30,7 @@ def get_balances():
     balances: dictionary of balances
     """
     balances = client.account.get_balances()
-    return pprint.pprint(balances)
+    return balances
 
 def get_positions():
     """
@@ -42,7 +43,7 @@ def get_positions():
     account_number = accounts[0].account_number # get account number of first account in a list
 
     positions = client.account.get_positions(account_number=account_number)
-    return pprint.pprint(positions)
+    return positions
 
 def send_order(symbol, quantity, side = "buy"):
     """
@@ -72,8 +73,8 @@ def send_order(symbol, quantity, side = "buy"):
                 client_order_id=client_order_id,
                 )
     placed_order_response = client.trading.place_order(order=order)
-    return pprint.pprint(placed_order_response)
+    return placed_order_response
 
-# get_balances()
-# send_order(symbol='AAPL', quantity=2, side='sell')
-# get_positions()
+# print(get_balances())
+# print(send_order(symbol='AAPL', quantity=2, side='buy'))
+# print(get_positions())
