@@ -228,22 +228,37 @@ def equity_curve(portfolio_cumulative_returns_data_id):
     """
     
     portfolio_returns = get_data(portfolio_cumulative_returns_data_id)
-    # portfolio_returns = pd.DataFrame(portfolio_returns)
-    # # Set the first column (date/index) as the index if it exists
-    # if len(portfolio_returns.columns) > 0:
-    #     portfolio_returns = portfolio_returns.set_index(portfolio_returns.columns[0])
-    # portfolio_returns = portfolio_returns.cumsum()
-
-    # print(portfolio_returns)
-
+    
+    # Convert to DataFrame if it's not already
+    if not isinstance(portfolio_returns, pd.DataFrame):
+        portfolio_returns = pd.DataFrame(portfolio_returns)
+    
+    # Ensure we have a datetime index or convert the first column to index
+    if not isinstance(portfolio_returns.index, pd.DatetimeIndex):
+        if len(portfolio_returns.columns) > 0:
+            portfolio_returns = portfolio_returns.set_index(portfolio_returns.columns[0])
+        portfolio_returns.index = pd.to_datetime(portfolio_returns.index)
+    
+    # Get the first column's values (or the Series if it's a Series)
+    if len(portfolio_returns.columns) > 0:
+        y_values = portfolio_returns.iloc[:, 0].tolist()
+    else:
+        y_values = portfolio_returns.values.flatten().tolist()
+    
+    # Convert datetime index to strings for JSON serialization
+    # Ensure index is DatetimeIndex and format as strings
+    datetime_index = pd.to_datetime(portfolio_returns.index)
+    x_values = datetime_index.strftime('%Y-%m-%d').tolist()
 
     response_payload = {
         "render_type": "plot", 
         "title": f"Equity Curve",
         "plot_data": {
             "data": [{
-                "x": portfolio_returns.index,
-                "y": portfolio_returns.values,
+                "x": x_values,
+                "y": y_values,
+                "type": "scatter",
+                "mode": "lines"
             }],
             "layout": {"title": f"Equity Curve"}
         }
