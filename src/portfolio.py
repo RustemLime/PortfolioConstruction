@@ -190,7 +190,18 @@ def backtest(portfolio_weights_data_id,rets_data_id):
 
     portfolio = Portfolio(X=rets, weights=weights)
 
+    portfolio_cumulative_returns = portfolio.cumulative_returns_df
+
+
+    data_id = str(uuid.uuid4())
+    save_data(data_id, portfolio_cumulative_returns)
+
+
     portfolio_result = portfolio.summary()
+    portfolio_result['portfolio_cumulative_returns_data_id'] = data_id
+    return portfolio_result
+
+    
 
     # data_id = str(uuid.uuid4())
     # save_data(data_id, portfolio_result)    
@@ -200,29 +211,40 @@ def backtest(portfolio_weights_data_id,rets_data_id):
     #     "table_data": portfolio_result,
     #     "data_id": data_id
     # }
-    return portfolio_result
+    # return portfolio_result
 
 
 
 
 
 
-def simple_plot():
-    """Возвращает данные о продажах для построения графика."""
+def equity_curve(portfolio_cumulative_returns_data_id):
+    """
+    This function plots the equity curve of the portfolio.
+    Parameters:
+    portfolio_cumulative_returns_data_id: id of the portfolio cumulative returns data
+    Returns:
+    response_payload: dictionary of response payload
+    """
     
-    
-    data = [10, 20, 15, 30]
-    indexes = ["Jan", "Feb", "Mar", "Apr"]
-    
+    portfolio_returns = get_data(portfolio_cumulative_returns_data_id)
+    # portfolio_returns = pd.DataFrame(portfolio_returns)
+    # # Set the first column (date/index) as the index if it exists
+    # if len(portfolio_returns.columns) > 0:
+    #     portfolio_returns = portfolio_returns.set_index(portfolio_returns.columns[0])
+    # portfolio_returns = portfolio_returns.cumsum()
+
+    # print(portfolio_returns)
+
 
     response_payload = {
         "render_type": "plot", 
         "title": f"Simple Plot",
         "plot_data": {
             "data": [{
-                "x": indexes,
-                "y": data,
-                "type": "bar",
+                "x": portfolio_returns.index,
+                "y": portfolio_returns.values,
+                "type": "line",
                 "marker": {"color": "indianred"}
             }],
             "layout": {"title": f"Simple Plot"}
@@ -237,11 +259,14 @@ def simple_plot():
 
 
 # print(get_sp500_tickers())
-rets = prepare_returns(tickers=['AAPL', 'MSFT', 'GOOGL'])
-print(rets)
+# rets = prepare_returns(tickers=['AAPL', 'MSFT', 'GOOGL'])
+# print(rets)
 
-weights = portfolio(json.loads(rets)['data_id'])
-print(weights)
+# weights = portfolio(json.loads(rets)['data_id'])
+# print(weights)
  
-backtest_result = backtest(json.loads(weights)['data_id'], json.loads(rets)['data_id'])
-print(backtest_result)
+# backtest_result = backtest(json.loads(weights)['data_id'], json.loads(rets)['data_id'])
+# print(backtest_result)
+
+# simple_plot_result = equity_curve(backtest_result['portfolio_cumulative_returns_data_id'])
+# print(simple_plot_result)
