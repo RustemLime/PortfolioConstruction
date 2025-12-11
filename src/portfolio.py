@@ -10,6 +10,8 @@ import uuid
 from datetime import datetime
 import requests
 import io
+import limexhub
+import os
 
 
 def get_sp500_tickers():
@@ -64,8 +66,32 @@ def prepare_returns(tickers = None, universe = 'sp500', start_date='2020-01-01',
     if tickers is None:
         raise ValueError(f"Invalid universe or tickers: {tickers} {universe}")
 
-    prices = pd.DataFrame(yf.download(tickers, start=start_date, end=end_date, auto_adjust=True))
-    prices = prices['Close'].ffill()
+    # Load API token from config file
+    config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+    limexhub_api_token = config['limexhub_api_token']
+    client = limexhub.RestAPI(token=limexhub_api_token)
+    prices = client.candles(tickers,
+                            start=start_date, 
+                            end=end_date, 
+                            interval = "1d")
+    
+    prices = prices['close'].ffill()
+    # Reshape: convert symbol from index level to columns
+    if isinstance(prices.index, pd.MultiIndex):
+        prices = prices.unstack()
+        # Flatten MultiIndex columns if needed
+        if isinstance(prices.columns, pd.MultiIndex):
+            prices.columns = prices.columns.droplevel(0)
+
+    # print(prices)
+
+
+    # prices = pd.DataFrame(yf.download(tickers, start=start_date, end=end_date, auto_adjust=True))
+    # prices = prices['Close'].ffill()
+
+    # print(prices)
     rets = skp.prices_to_returns(prices)
 
     data_id = str(uuid.uuid4())
@@ -272,8 +298,10 @@ def equity_curve(portfolio_cumulative_returns_data_id):
 
 
 # print(get_sp500_tickers())
-# rets = prepare_returns(tickers=['AAPL', 'MSFT', 'GOOGL'])
-# print(rets)
+rets = prepare_returns(tickers=['AAPL', 'MSFT', 'NVDA'])
+print(rets)
+
+
 
 # weights = portfolio(json.loads(rets)['data_id'])
 # print(weights)
