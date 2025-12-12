@@ -77,18 +77,18 @@ def factor_model(portfolio_cumulative_returns_data_id = None):
     model = sm.OLS(y, X).fit()
     # Display the summary of the regression
 
-    model_result = model.summary()
-    # Convert tables to DataFrames and then to JSON
-    json_output = {}
-    for i, table in enumerate(model_result.tables):
-        # Convert SimpleTable to a Pandas DataFrame
-        df = pd.read_html(table.as_html())[0]
-        # Use the table title or an index as the key in the JSON
-        # Note: table.title can sometimes be None for the first table.
-        table_title = f"table_{i+1}" if not table.title else table.title
-        json_output[table_title] = df.to_dict(orient='records')
+    # model_result = model.summary()
+    # # Convert tables to DataFrames and then to JSON
+    # json_output = {}
+    # for i, table in enumerate(model_result.tables):
+    #     # Convert SimpleTable to a Pandas DataFrame
+    #     df = pd.read_html(table.as_html())[0]
+    #     # Use the table title or an index as the key in the JSON
+    #     # Note: table.title can sometimes be None for the first table.
+    #     table_title = f"table_{i+1}" if not table.title else table.title
+    #     json_output[table_title] = df.to_dict(orient='records')
 
-    print(json_output)
+    return(print(model.summary()))
 
 
 
