@@ -298,8 +298,8 @@ def equity_curve(portfolio_cumulative_returns_data_id):
 
 
 # print(get_sp500_tickers())
-rets = prepare_returns(tickers=['AAPL', 'MSFT', 'NVDA'])
-print(rets)
+# rets = prepare_returns(tickers=['AAPL', 'MSFT', 'NVDA'])
+# print(rets)
 
 
 

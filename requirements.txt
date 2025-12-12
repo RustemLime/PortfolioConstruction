@@ -15,6 +15,7 @@ httpx==0.25.2
 idna==3.11
 joblib==1.5.2
 lime-trader-sdk==0.3.12
+limexhub==1.10.18
 lxml==6.0.2
 multitasking==0.0.12
 narwhals==2.12.0
